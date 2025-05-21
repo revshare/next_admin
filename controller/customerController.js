@@ -11,7 +11,7 @@ function isAlphaNumericBasic(text){
     return regex.test(text)
 }
 
-
+////changes from desktop
 
 export const edit_customer = async function (prevState, formData) {
     const user = await getUserFromCookie();
