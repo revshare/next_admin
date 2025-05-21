@@ -1,4 +1,4 @@
-import { getUserFromCookie } from "../lib/getUser";
+import { getUserFromCookie } from "../../lib/getUser";
 import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
@@ -15,6 +15,26 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { CiCirclePlus } from "react-icons/ci";
+import Link from "next/link";
+import CustomerPage from "@/components/customers/CustomerPage";
+
+// async function getData(): Promise<Customer[]> {
+//   // Fetch data from your API here.
+//   return [
+//     {
+//       _id: "728ed52f",
+//       first_name: "reuben",
+//       middle_name: "lanuza",
+//       last_name: "Baltazar",
+//       dob: "1990-05-31",
+//       phone: "098846832424",
+//       email: "m@example.com",
+//       address: "test",
+//     },
+//   ];
+// }
 
 export default async function Page() {
   const user = await getUserFromCookie();
@@ -35,13 +55,7 @@ export default async function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbLink href="#">Customers</BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -54,7 +68,19 @@ export default async function Page() {
             <div className="bg-muted/50 aspect-video rounded-xl" />
           </div> */}
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-            test
+            <h1 className="text-white-600 ml-5 text-xl mt-5">Customers</h1>
+
+            <div className="flex justify-end mr-5">
+              <Link href="/customers/Add/">
+                <Button className="flex items-center gap-2">
+                  <CiCirclePlus className="w-5 h-5" />
+                  Add
+                </Button>
+              </Link>
+            </div>
+            <div className="container mx-auto py-10 pl-5 pr-5">
+              <CustomerPage />
+            </div>
           </div>
         </div>
       </SidebarInset>

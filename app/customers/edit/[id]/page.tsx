@@ -1,5 +1,3 @@
-import { getUserFromCookie } from "../lib/getUser";
-import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -15,12 +13,26 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import CustomerForm from "@/components/customers/CustomerForm";
+import { CustomerFormValues } from "@/lib/customerSchema";
 
-export default async function Page() {
-  const user = await getUserFromCookie();
-  if (!user) {
-    redirect("/login");
+export default async function EditCustomerPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params; // ✅ no need to await params
+
+  const res = await fetch(`http://localhost:3000/customers/api/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch customer");
   }
+
+  const customer: CustomerFormValues = await res.json();
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -35,13 +47,11 @@ export default async function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Customers</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbLink href="#">Add Customers</BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -49,12 +59,12 @@ export default async function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-          </div> */}
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-            test
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+              </div> */}
+          <div className="bg-muted/50  rounded-xl md:min-h-min">
+            <CustomerForm customer={customer} />
           </div>
         </div>
       </SidebarInset>

@@ -1,5 +1,3 @@
-import { getUserFromCookie } from "../lib/getUser";
-import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -16,11 +14,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+import CustomerForm from "../../../components/customers/CustomerForm";
+
 export default async function Page() {
-  const user = await getUserFromCookie();
-  if (!user) {
-    redirect("/login");
-  }
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -35,13 +31,11 @@ export default async function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Customers</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbLink href="#">Add Customers</BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -53,8 +47,8 @@ export default async function Page() {
             <div className="bg-muted/50 aspect-video rounded-xl" />
             <div className="bg-muted/50 aspect-video rounded-xl" />
           </div> */}
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-            test
+          <div className="bg-muted/50  rounded-xl md:min-h-min">
+            <CustomerForm />
           </div>
         </div>
       </SidebarInset>
